@@ -11,6 +11,7 @@ DOLPHINS = 'dolphins.mp3'
 def _get_file_path(filename):
     return os.path.join(fixture_path, filename)
 
+
 fixture_results = {}
 
 with open(_get_file_path('dolphins.json')) as file:

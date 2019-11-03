@@ -41,6 +41,7 @@ class AudioIntensityAnalyzer:
         self._cache['thresholds'][cache_key] = list_of_quantiles
         return list_of_quantiles[threshold_quantile]
 
+
 if __name__ == '__main__':
     file = 'dolphins.mp3' if len(sys.argv) < 2 else sys.argv[1]
 
