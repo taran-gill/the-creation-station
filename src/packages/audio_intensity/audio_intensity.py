@@ -1,7 +1,9 @@
-import os, sys
+import os
+import sys
 from statistics import quantiles
 from pydub import AudioSegment
 from pydub.utils import make_chunks
+
 
 class AudioIntensityAnalyzer:
     def __init__(self, filepath):
@@ -13,7 +15,7 @@ class AudioIntensityAnalyzer:
         }
 
     # Chunk length in ms
-    def get_average_root_mean_square(self, chunk_length = 1):
+    def get_average_root_mean_square(self, chunk_length=1):
         if chunk_length in self._cache['rms']:
             return self._cache[chunk_length]
 
@@ -24,7 +26,7 @@ class AudioIntensityAnalyzer:
 
         self._cache['rms'][chunk_length] = average
         return average
-    
+
     def get_rms_threshold(self, chunk_length, num_intervals, threshold_quantile):
         cache_key = str(chunk_length) + '__' + str(num_intervals)
         if cache_key in self._cache['thresholds']:
@@ -42,7 +44,7 @@ class AudioIntensityAnalyzer:
 if __name__ == '__main__':
     file = 'dolphins.mp3' if len(sys.argv) < 2 else sys.argv[1]
 
-    script_path = os.path.abspath(os.path.join(__file__ , '../../../', 'fixtures/'))
+    script_path = os.path.abspath(os.path.join(__file__, '../../../', 'fixtures/'))
     file_path = os.path.join(script_path, file)
 
     audio_intensity_analyzer = AudioIntensityAnalyzer(file_path)
