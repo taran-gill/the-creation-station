@@ -1,0 +1,24 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/python:3.8.0-buster
+    steps:
+      - checkout
+      - run:
+          name: 'Build'
+          command: |
+            apt-get -y -qq install ffmpeg
+            pip install -r requirements.txt
+      - run:
+          name: 'Test'
+          command: |
+            mkdir test-results
+            python -m pytest -v --junitxml test-results/junit.xml src/
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+          destination: tr1
