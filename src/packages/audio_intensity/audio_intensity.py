@@ -1,5 +1,6 @@
 import os
 import sys
+from functools import reduce
 from statistics import quantiles
 from pydub import AudioSegment
 from pydub.utils import make_chunks
@@ -19,9 +20,7 @@ class AudioIntensityAnalyzer:
         if chunk_length in self._cache['rms']:
             return self._cache[chunk_length]
 
-        total = 0
-        for chunk in make_chunks(self._sound, chunk_length):
-            total += chunk.rms
+        total = reduce(lambda total, elem: total + elem.rms, make_chunks(self._sound, chunk_length), 0)
         average = total / (self._sound.duration_seconds / chunk_length * 1000)
 
         self._cache['rms'][chunk_length] = average
