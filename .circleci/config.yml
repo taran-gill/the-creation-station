@@ -34,6 +34,9 @@ aliases:
   - &attach_workspace
     at: ~/project/reports
 
+  - &store_artifacts
+    path: ~/project/reports
+
 jobs:
   setup_python:
     working_directory: ~/project
@@ -66,6 +69,7 @@ jobs:
           root: ~/project/reports
           paths:
             - junit.xml
+      - store_artifacts: *store_artifacts
 
   lint_python:
     working_directory: ~/project
@@ -83,6 +87,7 @@ jobs:
           root: ~/project/reports
           paths:
             - lint.txt
+      - store_artifacts: *store_artifacts
 
   process_artifacts_python:
     working_directory: ~/project
@@ -93,9 +98,7 @@ jobs:
       - *restore_cache_python
       - store_test_results:
           path: reports
-      - store_artifacts:
-          path: reports
-          destination: tr
+      - store_artifacts: *store_artifacts
 
 workflows:
   version: 2
