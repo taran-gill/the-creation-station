@@ -1,6 +1,11 @@
 import React from 'react';
+
+import Connection from './connection';
+
 import logo from './logo.svg';
 import './App.css';
+
+fetch(Connection.getApiServer()).then((a) => { console.log(a.body) })
 
 function App() {
   return (
