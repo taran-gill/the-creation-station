@@ -1,11 +1,17 @@
+let hostname = null;
+if (process.env.NODE_ENV === 'development') {
+    hostname = `http://${window.location.hostname}:${process.env.REACT_APP_API_PORT}`;
+}
+
 class Connection {
-    static getApiServer = () => {
-        if (process.env.NODE_ENV === 'development') {
-            return `http://${window.location.hostname}:${process.env.REACT_APP_API_PORT}`;
+    static get = async (path) => {
+        const response = await fetch(hostname + path);
+
+        if (!response.ok) {
+            return null;
         }
 
-        // TODO: In production, get api server from environment variable
-        return null;
+        return response.text();
     }
 }
 

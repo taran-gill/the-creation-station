@@ -5,7 +5,7 @@ import Connection from './connection';
 import logo from './logo.svg';
 import './App.css';
 
-fetch(Connection.getApiServer()).then((a) => { console.log(a.body) })
+Connection.get('/ping').then((a) => { console.log(a) })
 
 function App() {
   return (
