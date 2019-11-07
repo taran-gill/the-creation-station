@@ -13,9 +13,9 @@ def activate():
         app.logger.debug('***Type `docker-machine ip` into Quickstart Terminal***')
 
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+@app.route('/ping')
+def ping_pong():
+    return 'pong'
 
 
 if __name__ == '__main__':
