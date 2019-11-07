@@ -11,10 +11,9 @@ RUN apt-get -qq -y update
 RUN apt-get -qq -y install
 RUN apt-get -y -qq install ffmpeg
 
-RUN mkdir /project
-WORKDIR /project
-COPY requirements.txt /project/
+WORKDIR /api
+COPY requirements.txt /api/
 RUN pip install -r requirements.txt
-COPY . /project/
+COPY . /api/
 
 CMD ["python", "src/server/entry.py"]

@@ -1,13 +1,16 @@
 version: "3.3"
 services:
 
-  # api:
-  #   image: creation_station_api:latest
-  #   build:
-  #     context: .
-  #     dockerfile: config/api.Dockerfile
-  #   ports:
-  #     - "5000:5000"
+  api:
+    image: creation_station_api:latest
+    build:
+      context: .
+      dockerfile: config/api.Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/api
+      - /api/client # Don't copy over client code
 
   web:
     image: creation_station_web:latest
@@ -18,4 +21,3 @@ services:
       - "3000:3000"
     volumes:
       - ./src/client:/web
-      # - ./src/client/node_modules:/web/node_modules
