@@ -22,6 +22,7 @@ function App() {
     return (
         <React.Fragment>
             <NavBar />
+            Netlify preview worked!
         </React.Fragment>
     );
 }
