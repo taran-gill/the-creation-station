@@ -1,31 +1,29 @@
 import React from 'react';
 
+import { NavBar } from './components/NavBar';
+
 import Connection from './connection';
 
-import logo from './logo.svg';
-import './App.css';
+if (process.env.NODE_ENV === 'development') {
+    const displayErr = (err) => {
+        console.error('Unable to establish connection to server', err);
+    }
 
-Connection.get('/ping').then((a) => { console.log(a) })
+    Connection.get('/ping')
+        .then(res => {
+            res === 'pong' ?
+                console.log('Connection to server established!') :
+                displayErr(res);
+        })
+        .catch(displayErr);
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <React.Fragment>
+            <NavBar />
+        </React.Fragment>
+    );
 }
 
 export default App;
