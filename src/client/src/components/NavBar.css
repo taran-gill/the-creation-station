@@ -1,0 +1,28 @@
+.mdc-top-app-bar__section {
+    justify-content: center;
+}
+
+.mdc-top-app-bar__section.mdc-top-app-bar__section--align-end {
+    flex: 0 1 auto;
+}
+
+.navbar {
+    background-color: #A370A7;
+    color: white;
+}
+
+.navbar .navbar__logo {
+    height: 50px;
+    width: auto;
+
+    margin: 0 0px 6px 12px;
+}
+
+.navbar .navbar__title {
+    font-family: Lato, sans-serif;
+}
+
+.navbar .fa {
+    color: white;
+    font-size: 24px;
+}
