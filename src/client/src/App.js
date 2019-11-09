@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { NavBar } from './components/NavBar';
+import { MediaRecorder } from './components/MediaRecorder';
 
 import Connection from './connection';
 
@@ -22,6 +23,7 @@ function App() {
     return (
         <React.Fragment>
             <NavBar />
+            <MediaRecorder />
         </React.Fragment>
     );
 }
