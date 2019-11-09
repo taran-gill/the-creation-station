@@ -1,6 +1,6 @@
 let hostname = null;
 if (process.env.NODE_ENV === 'development') {
-    hostname = `http://${window.location.hostname}:${process.env.REACT_APP_API_PORT}`;
+    hostname = `https://${window.location.hostname}:${process.env.REACT_APP_API_PORT}`;
 }
 
 class Connection {
