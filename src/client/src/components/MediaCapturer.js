@@ -1,4 +1,7 @@
 import React from 'react';
+import { Button } from '@rmwc/button';
+
+import './MediaCapturer.css';
 
 navigator.getUserMedia = navigator.getUserMedia ||
 						 navigator.webkitGetUserMedia ||
@@ -127,11 +130,11 @@ class MediaCapturer extends React.Component {
         
         return (
             <React.Fragment>
-                <div>
+                <div className='media-capturer'>
                     {
                         !this.state.recording ?
-                            <button onClick={this.onStart}>Start</button> :
-                            <button onClick={this.onStop}>Stop</button>
+                            <Button raised icon='play_arrow' label='Start' onClick={this.onStart} /> :
+                            <Button raised danger icon='stop' label='Stop' onClick={this.onStop} />
                     }
                     
                     <video ref={this.video} autoPlay></video>

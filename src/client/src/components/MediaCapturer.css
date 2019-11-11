@@ -1,0 +1,26 @@
+.media-capturer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    margin-top: 10px;
+}
+
+.media-capturer .mdc-button {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.media-capturer video {
+    background-color: black;
+
+    height: 480px;
+    width: 640px;
+}
+
+@media (max-width: 640px) {
+    .media-capturer video {
+        height: 240px;
+        width: 320px;
+    }
+}
