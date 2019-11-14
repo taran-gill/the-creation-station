@@ -13,6 +13,16 @@ class Connection {
 
         return response.text();
     }
+
+    static put = async (path, body) => {
+        const response = await fetch(hostname + path, { method: 'POST', body });
+
+        if (!response.ok) {
+            return null;
+        }
+
+        return response.text();
+    }
 }
 
 export { Connection as default, Connection };

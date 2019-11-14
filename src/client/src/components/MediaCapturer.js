@@ -1,6 +1,8 @@
 import React from 'react';
 import { Button } from '@rmwc/button';
 
+import Connection from '../connection';
+
 import './MediaCapturer.css';
 
 navigator.getUserMedia = navigator.getUserMedia ||
@@ -58,7 +60,7 @@ class MediaCapturer extends React.Component {
 				}
 			};
 
-            this.setState({ mediaRecorder, recording: true }, () => {
+            this.setState({ mediaRecorder, recording: true, blob: null }, () => {
                 this.state.mediaRecorder.start(10);
                 this.attachToVideoElement();
             });
@@ -98,27 +100,25 @@ class MediaCapturer extends React.Component {
             recording: false,
         }, () => {
             this.releaseFromVideoElement();
-            this.downloadVideo();
         });
     }
 
+    onUpload = () => {
+        Connection.put('/upload', this.state.blob);
+    }
+
     attachToVideoElement = () => {
+        this.video.current.autoplay = true;
+        this.video.current.controls = false;
         this.video.current.srcObject = this.stream;
+        this.video.current.src = null;
     }
 
     releaseFromVideoElement = () => {
+        this.video.current.autoplay = false;
+        this.video.current.controls = true;
         this.video.current.srcObject = null;
-    }
-
-    downloadVideo = () => {
-        const url = URL.createObjectURL(this.state.blob);
-		const a = document.createElement('a');
-		a.style.display = 'none';
-		a.href = url;
-		a.setAttribute('download', 'presentation');
-		document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        this.video.current.src = URL.createObjectURL(this.state.blob);
     }
 
     render() {
@@ -138,6 +138,11 @@ class MediaCapturer extends React.Component {
                     }
                     
                     <video ref={this.video} autoPlay></video>
+
+                    {
+                        this.state.blob &&
+                            <Button raised icon='cloud_upload' label='Upload' onClick={this.onUpload} />
+                    }
                 </div>
             </React.Fragment>
         );
