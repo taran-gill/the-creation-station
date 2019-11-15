@@ -110,6 +110,7 @@ class MediaCapturer extends React.Component {
     attachToVideoElement = () => {
         this.video.current.autoplay = true;
         this.video.current.controls = false;
+        this.video.current.muted = 'muted';
         this.video.current.srcObject = this.stream;
         this.video.current.src = null;
     }
@@ -117,6 +118,7 @@ class MediaCapturer extends React.Component {
     releaseFromVideoElement = () => {
         this.video.current.autoplay = false;
         this.video.current.controls = true;
+        this.video.current.muted = false;
         this.video.current.srcObject = null;
         this.video.current.src = URL.createObjectURL(this.state.blob);
     }
@@ -137,7 +139,7 @@ class MediaCapturer extends React.Component {
                             <Button raised danger icon='stop' label='Stop' onClick={this.onStop} />
                     }
                     
-                    <video ref={this.video} autoPlay></video>
+                    <video ref={this.video}></video>
 
                     {
                         this.state.blob &&
