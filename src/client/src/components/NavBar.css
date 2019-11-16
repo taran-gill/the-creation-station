@@ -2,9 +2,17 @@
     flex: 0 1 auto;
 }
 
-.navbar {
-    background-color: #A370A7;
-    color: white;
+@media only screen and (max-width: 340px) {
+    .mdc-top-app-bar__section.mdc-top-app-bar__section--align-end {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .navbar {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
 }
 
 .navbar .navbar__logo {
@@ -12,6 +20,15 @@
     width: auto;
 
     margin: 0 0px 6px 12px;
+}
+
+@media only screen and (max-width: 340px) {
+    .navbar .navbar__logo {
+        height: 50px;
+        width: auto;
+    
+        margin: 0 0px 6px 0px;
+    }
 }
 
 .navbar .navbar__title {

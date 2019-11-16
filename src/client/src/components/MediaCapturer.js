@@ -135,7 +135,7 @@ class MediaCapturer extends React.Component {
                 <div className='media-capturer'>
                     {
                         !this.state.recording ?
-                            <Button raised icon='play_arrow' label='Start' onClick={this.onStart} /> :
+                            <Button raised icon='play_arrow' label='Start' theme={['secondaryBg', 'onSecondary']} onClick={this.onStart} /> :
                             <Button raised danger icon='stop' label='Stop' onClick={this.onStop} />
                     }
                     
@@ -143,7 +143,7 @@ class MediaCapturer extends React.Component {
 
                     {
                         this.state.blob &&
-                            <Button raised icon='cloud_upload' label='Upload' onClick={this.onUpload} />
+                            <Button raised icon='cloud_upload' label='Upload' theme={['secondaryBg', 'onSecondary']} onClick={this.onUpload} />
                     }
                 </div>
             </React.Fragment>
