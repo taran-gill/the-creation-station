@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
+import './util/polyfill';
+
 import 'font-awesome/css/font-awesome.min.css';
 import 'material-components-web/dist/material-components-web.min.css';
 import './index.css';

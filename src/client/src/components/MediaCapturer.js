@@ -1,28 +1,13 @@
 import React from 'react';
 import { Button } from '@rmwc/button';
+import * as posenet from '@tensorflow-models/posenet';
 
 import Connection from '../connection';
 
 import './MediaCapturer.css';
+import { drawSkeleton } from '../util/canvas';
 
-navigator.getUserMedia = navigator.getUserMedia ||
-						 navigator.webkitGetUserMedia ||
-						 navigator.mozGetUserMedia ||
-                         navigator.msGetUserMedia;
-
-const MediaStream = window.MediaStream || window.webkitMediaStream;
-
-if (MediaStream && !Reflect.has(MediaStream.prototype, 'stop')) {
-    MediaStream.prototype.stop = function() {
-        this.getAudioTracks().forEach(function(track) { track.stop(); });
-        this.getVideoTracks().forEach(function(track) { track.stop(); });
-    };
-}
-
-const CONSTRAINTS = {
-    audio: true,
-    video: true
-};
+const CONSTRAINTS = { audio: true, video: { facingMode: 'user' } };
 
 const TYPES = ['video/webm;codecs=vp8', 'video/webm', ''];
 
@@ -30,6 +15,7 @@ class MediaCapturer extends React.Component {
     constructor(props) {
         super(props);
         this.video = React.createRef();
+        this.canvas = React.createRef();
 
         /* Don't need to force rerendering when the mediaChunk changes */
         this.mediaChunk = [];
@@ -43,8 +29,12 @@ class MediaCapturer extends React.Component {
         blob: null
     }
 
+    async componentDidMount() {
+        this.net = await posenet.load();
+    }
+
     onStart = () => {
-        const handleSuccess = (stream) => {
+        const handleSuccess = async (stream) => {
             this.stream = stream;
 			this.mediaChunk = [];
 
@@ -64,6 +54,8 @@ class MediaCapturer extends React.Component {
                 this.state.mediaRecorder.start(10);
                 this.attachToVideoElement();
             });
+
+            this.video.current.onloadedmetadata = this.detectPose;
         }
 
         const handleFailed = (error) => {
@@ -123,6 +115,38 @@ class MediaCapturer extends React.Component {
         this.video.current.src = URL.createObjectURL(this.state.blob);
     }
 
+    detectPose = () => {
+        const canvasContext = this.canvas.current.getContext('2d');
+        Object.assign(this.canvas.current, { width: this.video.current.videoWidth, height: this.video.current.videoHeight });
+        this.poseDetectionFrame(canvasContext);
+    }
+
+    poseDetectionFrame = (canvasContext) => {
+        const findPoseDetectionFrame = async () => {
+            const poses = await this.net.estimateSinglePose(
+                this.video.current,
+                1,
+                true,
+                8
+            )
+
+            canvasContext.clearRect(0, 0, this.video.current.videoWidth, this.video.current.videoHeight)
+        
+            canvasContext.save()
+            canvasContext.scale(-1, 1)
+            canvasContext.translate(-this.video.current.videoWidth, 0)
+            canvasContext.drawImage(this.video.current, 0, 0, this.video.current.videoWidth, this.video.current.videoHeight)
+            canvasContext.restore();
+
+            console.log(poses.score)
+            // if (score < 0.7) return;
+            drawSkeleton(poses.keypoints, 0, canvasContext);
+
+            requestAnimationFrame(findPoseDetectionFrame)
+        }
+        findPoseDetectionFrame()
+    }
+
     render() {
         if (this.state.error) {
             return (
@@ -139,7 +163,8 @@ class MediaCapturer extends React.Component {
                             <Button raised danger icon='stop' label='Stop' onClick={this.onStop} />
                     }
                     
-                    <video ref={this.video}></video>
+                    <video playsInline ref={this.video}></video>
+                    <canvas ref={this.canvas}/>
 
                     {
                         this.state.blob &&
