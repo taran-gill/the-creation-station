@@ -1,14 +1,30 @@
-.mdc-top-app-bar__section {
-    justify-content: center;
+.navbar.mdc-top-app-bar {
+    background-color: #02020233;
 }
 
 .mdc-top-app-bar__section.mdc-top-app-bar__section--align-end {
     flex: 0 1 auto;
 }
 
-.navbar {
-    background-color: #A370A7;
-    color: white;
+@media only screen and (max-width: 360px) {
+    .mdc-top-app-bar__section {
+        justify-content: center;
+    }
+
+    .mdc-top-app-bar__section.mdc-top-app-bar__section--align-end {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .navbar {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+}
+
+.navbar a * {
+    display: inline-block;
 }
 
 .navbar .navbar__logo {
@@ -18,8 +34,19 @@
     margin: 0 0px 6px 12px;
 }
 
+@media only screen and (max-width: 360px) {
+    .navbar .navbar__logo {
+        height: 50px;
+        width: auto;
+    
+        margin: 0 0px 6px 0px;
+    }
+}
+
 .navbar .navbar__title {
     font-family: Lato, sans-serif;
+    margin-bottom: 10px;
+    padding-left: 10px;
 }
 
 .navbar .fa {

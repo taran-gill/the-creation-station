@@ -1,0 +1,31 @@
+.media-capturer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.media-capturer .mdc-button {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.media-capturer video {
+    background-color: black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 2px 2px rgb(5, 5, 5);
+
+    height: 480px;
+    width: 640px;
+}
+
+.media-capturer video:focus {
+    outline: white;
+}
+
+@media (max-width: 640px) {
+    .media-capturer video {
+        height: 240px;
+        width: 320px;
+    }
+}
