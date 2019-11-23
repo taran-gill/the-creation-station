@@ -10,6 +10,22 @@ body {
   background-color: #222;
 }
 
+a:link, a:visited {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+
+  transition-duration: 0.3s;
+}
+
+a:hover {
+  opacity: 75%;
+}
+
+a:focus {
+  opacity: 50%;
+}
+
 :root {
   --mdc-theme-primary: #3a63b3da;
   --mdc-theme-secondary: #49c0b6da;

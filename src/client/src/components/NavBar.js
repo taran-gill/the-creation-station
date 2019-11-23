@@ -18,8 +18,10 @@ class NavBar extends React.Component {
                 <TopAppBar className='navbar'>
                     <TopAppBarRow>
                         <TopAppBarSection>
-                            <img src={Logo} className='navbar__logo' alt='logo'/>
-                            <TopAppBarTitle className='navbar__title'>THE CREATION STATION</TopAppBarTitle>
+                            <a href='/'>
+                                <img src={Logo} className='navbar__logo' alt='logo'/>
+                                <TopAppBarTitle className='navbar__title'>THE CREATION STATION</TopAppBarTitle>
+                            </a>
                         </TopAppBarSection>
                         <TopAppBarSection alignEnd>
                             <a
