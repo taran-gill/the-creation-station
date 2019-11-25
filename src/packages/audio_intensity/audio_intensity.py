@@ -1,7 +1,7 @@
 import os
 import sys
 from functools import reduce
-from statistics import quantiles
+import numpy as np
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 
@@ -26,19 +26,16 @@ class AudioIntensityAnalyzer:
         self._cache['rms'][chunk_length] = average
         return average
 
-    def get_rms_threshold(self, chunk_length, num_intervals, threshold_quantile):
-        cache_key = str(chunk_length) + '__' + str(num_intervals)
+    def get_rms_threshold(self, chunk_length, threshold_quantile):
+        cache_key = str(chunk_length) + '__' + str(threshold_quantile)
         if cache_key in self._cache['thresholds']:
-            return self._cache['thresholds'][cache_key][threshold_quantile]
+            return self._cache['thresholds'][cache_key]
 
-        # If sample space is exhaustive, calculate the quantile with no room for error
-        method = 'inclusive' if chunk_length == 1 else 'exclusive'
+        sound = np.array([s.rms for s in self._sound[::chunk_length]])
+        quantile_value = np.quantile(sound, threshold_quantile)
 
-        sound = [s.rms for s in self._sound[::chunk_length]]
-        list_of_quantiles = quantiles(sound, n=num_intervals, method=method)
-
-        self._cache['thresholds'][cache_key] = list_of_quantiles
-        return list_of_quantiles[threshold_quantile]
+        self._cache['thresholds'][cache_key] = quantile_value
+        return quantile_value
 
 
 if __name__ == '__main__':
@@ -50,4 +47,6 @@ if __name__ == '__main__':
     audio_intensity_analyzer = AudioIntensityAnalyzer(file_path)
 
     print(audio_intensity_analyzer.get_average_root_mean_square(1000))
-    print(audio_intensity_analyzer.get_rms_threshold(1000, 10, 8))
+    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
+    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.8))
+    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))
