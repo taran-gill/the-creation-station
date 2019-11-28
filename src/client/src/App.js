@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { NavBar } from './components/NavBar';
-import { MediaCapturer } from './components/MediaCapturer';
+import { MediaCapturer } from './components/media-capturer/MediaCapturer';
 import { Status } from './components/Status';
 
 function App() {

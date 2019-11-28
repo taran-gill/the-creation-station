@@ -1,28 +1,13 @@
-import React from 'react';
-import { Button } from '@rmwc/button';
+import React from 'react'
 
-import Connection from '../connection';
+import './polyfill';
+import { MediaActions } from './MediaActions';
+
+import Connection from '../../connection';
 
 import './MediaCapturer.css';
 
-navigator.getUserMedia = navigator.getUserMedia ||
-						 navigator.webkitGetUserMedia ||
-						 navigator.mozGetUserMedia ||
-                         navigator.msGetUserMedia;
-
-const MediaStream = window.MediaStream || window.webkitMediaStream;
-
-if (MediaStream && !Reflect.has(MediaStream.prototype, 'stop')) {
-    MediaStream.prototype.stop = function() {
-        this.getAudioTracks().forEach(function(track) { track.stop(); });
-        this.getVideoTracks().forEach(function(track) { track.stop(); });
-    };
-}
-
-const CONSTRAINTS = {
-    audio: true,
-    video: true
-};
+const CONSTRAINTS = { audio: true, video: true };
 
 const TYPES = ['video/webm;codecs=vp8', 'video/webm', ''];
 
@@ -133,18 +118,15 @@ class MediaCapturer extends React.Component {
         return (
             <React.Fragment>
                 <div className='media-capturer'>
-                    {
-                        !this.state.recording ?
-                            <Button raised icon='play_arrow' label='Start' className='media-capturer__start-button' onClick={this.onStart} /> :
-                            <Button raised danger icon='stop' label='Stop' onClick={this.onStop} />
-                    }
-                    
                     <video ref={this.video}></video>
 
-                    {
-                        this.state.blob &&
-                            <Button raised icon='cloud_upload' label='Upload' theme={['secondaryBg', 'onSecondary']} onClick={this.onUpload} />
-                    }
+                    <MediaActions
+                        recording={this.state.recording}
+                        blob={this.state.blob}
+                        onStart={this.onStart}
+                        onStop={this.onStop}
+                        onUpload={this.onUpload}
+                    />
                 </div>
             </React.Fragment>
         );

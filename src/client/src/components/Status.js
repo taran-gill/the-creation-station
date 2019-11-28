@@ -44,7 +44,7 @@ class Status extends React.Component {
                 onClose={evt => this.setState({ open: false })}
                 message={this.state.serverStatus}
                 dismissIcon
-                timeout={50000}
+                timeout={10000}
                 className={snackbarClass}
             />
         );
