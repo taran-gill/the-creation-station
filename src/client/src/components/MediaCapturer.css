@@ -10,6 +10,10 @@
     margin-bottom: 10px;
 }
 
+.media-capturer .mdc-button.media-capturer__start-button {
+    background-color: rgba(0, 170, 0, 0.8);
+}
+
 .media-capturer video {
     background-color: black;
     border-radius: 10px;

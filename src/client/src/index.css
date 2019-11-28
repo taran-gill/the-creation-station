@@ -30,6 +30,6 @@ a:focus {
 }
 
 :root {
-  --mdc-theme-primary: #3a63b3da;
-  --mdc-theme-secondary: #49c0b6da;
+  --mdc-theme-primary: rgb(141, 57, 131);
+  --mdc-theme-secondary: rgb(7, 180, 175);
 }

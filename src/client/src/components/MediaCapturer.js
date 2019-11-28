@@ -135,7 +135,7 @@ class MediaCapturer extends React.Component {
                 <div className='media-capturer'>
                     {
                         !this.state.recording ?
-                            <Button raised icon='play_arrow' label='Start' theme={['secondaryBg', 'onSecondary']} onClick={this.onStart} /> :
+                            <Button raised icon='play_arrow' label='Start' className='media-capturer__start-button' onClick={this.onStart} /> :
                             <Button raised danger icon='stop' label='Stop' onClick={this.onStop} />
                     }
                     
