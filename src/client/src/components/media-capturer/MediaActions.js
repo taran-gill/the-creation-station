@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@rmwc/button';
+import { Card } from '@rmwc/card';
 
 import './MediaActions.css';
 
@@ -22,14 +23,14 @@ class MediaActions extends React.Component {
         );
 
         return (
-            <div className='media-actions'>
+            <Card className='media-actions'>
                 When you're ready, { playButton } recording your presentation.
 
                 <br />
                 <br />
 
                 Once you're happy with your work, { uploadButton } to see how you did!
-            </div>
+            </Card>
         );
     }
 }

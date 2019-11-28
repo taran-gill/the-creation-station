@@ -1,3 +1,8 @@
+.media-actions.mdc-card {
+    background-color: #ffffff05;
+    color: inherit;
+}
+
 @media (max-width: 1300px) {
     .media-actions {
         display: flex;
@@ -6,6 +11,7 @@
 
         margin-top: 20px;
         margin-bottom: 20px;
+        padding: 20px;
 
         text-align: center;
     }
@@ -16,9 +22,10 @@
 }
 
 @media (min-width: 1300px) {
-    .media-actions {
-        margin-top: 40px;
-        width: 640px;
+    .media-actions.mdc-card {
+        width: 600px;
+        padding: 0 20px;
+        display: block;
     }
 }
 
