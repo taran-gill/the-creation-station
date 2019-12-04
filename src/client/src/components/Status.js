@@ -1,4 +1,5 @@
 import React from 'react';
+import { Snackbar } from '@rmwc/snackbar';
 
 import Connection from '../connection';
 
@@ -6,12 +7,13 @@ import './Status.css';
 
 const MESSAGES = {
     CONNECTED: 'Connection to server established!',
-    UNABLE_TO_CONNECT: 'WARNING: Unable to establish connection to server'
+    UNABLE_TO_CONNECT: 'ERROR: Unable to establish connection to server'
 }
 
 class Status extends React.Component {
     state = {
-        serverStatus: null
+        serverStatus: null,
+        open: false
     }
 
     componentDidMount() {
@@ -32,19 +34,19 @@ class Status extends React.Component {
     render() {
         if (!this.state.serverStatus) return null;
 
-        const color = this.state.serverStatus === MESSAGES.CONNECTED ?
-            'green' :
-            'red';
-
-        const icon = this.state.serverStatus === MESSAGES.CONNECTED ?
-            'check' :
-            'times';
+        const snackbarClass = this.state.serverStatus === MESSAGES.CONNECTED ?
+            'connected' :
+            'error';
 
         return (
-            <div className='status' style={{ color }}>
-                <i className={`fa fa-${icon}`}></i>
-                <p>{this.state.serverStatus}</p>
-            </div>
+            <Snackbar
+                open={!!this.state.serverStatus}
+                onClose={evt => this.setState({ open: false })}
+                message={this.state.serverStatus}
+                dismissIcon
+                timeout={10000}
+                className={snackbarClass}
+            />
         );
     }
 }

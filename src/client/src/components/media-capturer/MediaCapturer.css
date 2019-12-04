@@ -1,13 +1,8 @@
 .media-capturer {
     display: flex;
+    justify-content: space-evenly;
     align-items: center;
-    flex-direction: column;
-}
-
-.media-capturer .mdc-button {
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 3%;
 }
 
 .media-capturer video {
@@ -23,7 +18,14 @@
     outline: white;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 1300px) {
+    .media-capturer {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media (max-width: 660px) {
     .media-capturer video {
         height: 240px;
         width: 320px;
