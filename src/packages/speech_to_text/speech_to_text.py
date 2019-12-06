@@ -33,7 +33,6 @@ def analyze_text(filepath):
         print('Transcript: {}'.format(result.alternatives[0].transcript))
 
 
-        
 if __name__ == '__main__':
     file = 'five_words.mp3' 
 
@@ -41,4 +40,3 @@ if __name__ == '__main__':
     file_path = os.path.join(script_path, file)
 
     analyze_text(file_path)
-    
