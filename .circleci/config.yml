@@ -2,7 +2,7 @@ version: 2
 
 aliases:
   - &docker_python
-    - image: circleci/python:3.7.5-buster
+    - image: circleci/python:3.7.5-stretch
 
   - &restore_cache_python
     restore_cache:
