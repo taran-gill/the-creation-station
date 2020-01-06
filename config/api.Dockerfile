@@ -22,27 +22,21 @@ ADD config/setup/sphinx/${SPHINXBASE}.tar.gz   /sphinx/
 ADD config/setup/sphinx/${POCKETSPHINX}.tar.gz /sphinx/
 ADD config/setup/sphinx/${SPHINXTRAIN}.tar.gz  /sphinx/
 
-RUN mv /sphinx/${SPHINXBASE}   /sphinx/sphinxbase
-RUN mv /sphinx/${POCKETSPHINX} /sphinx/pocketsphinx
-RUN mv /sphinx/${SPHINXTRAIN}  /sphinx/sphinxtrain
+RUN mv /sphinx/${SPHINXBASE} /sphinx/sphinxbase && \
+    mv /sphinx/${POCKETSPHINX} /sphinx/pocketsphinx && \
+    mv /sphinx/${SPHINXTRAIN} /sphinx/sphinxtrain
 
 WORKDIR /sphinx/sphinxbase
 RUN ./configure --with-swig-python
-RUN make 
-RUN make install
+RUN make && make check && make install && make installcheck
 
 WORKDIR /sphinx/pocketsphinx
 RUN ./configure --with-swig-python
-RUN make
-RUN make check
-RUN make install
-RUN make installcheck
+RUN make && make check && make install && make installcheck
 
 WORKDIR /sphinx/sphinxtrain
 RUN ./configure
-RUN make
-RUN make check
-RUN make installcheck
+RUN make && make check && make installcheck
 
 ENV SPHINX_MODEL /sphinx/pocketsphinx/model
 
