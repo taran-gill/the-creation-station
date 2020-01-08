@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS as cors
 
 app = Flask(__name__)
@@ -18,5 +18,12 @@ def ping_pong():
     return 'pong'
 
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    app.logger.info('Received request ' + str(len(request.get_data())) + ' bytes long')
+
+    return 'Upload successful!'
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', ssl_context='adhoc')

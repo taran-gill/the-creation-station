@@ -3,7 +3,6 @@ import {
     TopAppBar,
     TopAppBarRow,
     TopAppBarSection,
-    TopAppBarActionItem,
     TopAppBarTitle,
     TopAppBarFixedAdjust,
 } from '@rmwc/top-app-bar';
@@ -19,11 +18,17 @@ class NavBar extends React.Component {
                 <TopAppBar className='navbar'>
                     <TopAppBarRow>
                         <TopAppBarSection>
-                            <img src={Logo} className='navbar__logo' />
-                            <TopAppBarTitle className='navbar__title'>THE CREATION STATION</TopAppBarTitle>
+                            <a href='/'>
+                                <img src={Logo} className='navbar__logo' alt='logo'/>
+                                <TopAppBarTitle className='navbar__title'>THE CREATION STATION</TopAppBarTitle>
+                            </a>
                         </TopAppBarSection>
                         <TopAppBarSection alignEnd>
-                            <a href='https://github.com/taran-gill/the-creation-station' target="_blank" rel="noopener">
+                            <a
+                            href='https://github.com/taran-gill/the-creation-station'
+                            target='_blank'
+                            rel='noopener noreferrer'
+                            >
                                 <i className="fa fa-github" alt='github'></i>
                             </a>
                         </TopAppBarSection>

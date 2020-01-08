@@ -34,7 +34,7 @@ def test_root_mean_square_threshold():
 
     # Test if the threshold is sufficiently close when we halve the sampling rate
     assert math.isclose(
-        audio_intensity_analyzer.get_rms_threshold(1, 10, 8),
-        audio_intensity_analyzer.get_rms_threshold(2, 10, 8),
+        audio_intensity_analyzer.get_rms_threshold(1, 0.8),
+        audio_intensity_analyzer.get_rms_threshold(2, 0.8),
         rel_tol=0.05
     )
