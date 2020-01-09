@@ -5,6 +5,7 @@ from google.cloud import speech
 from google.cloud.speech import enums
 from google.cloud.speech import types
 
+
 def analyze_text(filepath):
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./../../../Creation-Station-fb047bcb7c0b.json"
 
@@ -34,7 +35,7 @@ def analyze_text(filepath):
 
 
 if __name__ == '__main__':
-    file = 'five_words.mp3' 
+    file = 'five_words.mp3'
 
     script_path = os.path.abspath(os.path.join(__file__, '../../../', 'fixtures/'))
     file_path = os.path.join(script_path, file)
