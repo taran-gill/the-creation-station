@@ -7,7 +7,7 @@ from google.cloud.speech import types
 
 
 def analyze_text(filepath):
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./../../../Creation-Station-fb047bcb7c0b.json"
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/api/google-services.json"
 
     # Instantiates a client
     client = speech.SpeechClient()
