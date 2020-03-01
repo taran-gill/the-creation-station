@@ -48,7 +48,6 @@ class PoseEstimator:
         for i, (confidence, coordinates) in enumerate(zip(keypoint_scores, keypoint_coords)):
             # Coordinates are given in (Y, X) so we change them
             results[posenet.PART_NAMES[i]] = { 'confidence': confidence, 'coordinates': (coordinates[1], coordinates[0]) }
-            print(posenet.PART_NAMES[i], confidence, coordinates)
 
         return results
 

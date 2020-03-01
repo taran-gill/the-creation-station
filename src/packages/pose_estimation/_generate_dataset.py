@@ -8,6 +8,8 @@ if __name__ == '__main__':
 
     filenames = [f.path for f in os.scandir('./images') if f.is_file()]
 
+    print('Generating dataset for', len(filenames), 'images')
+
     dataset = []
 
     for f in filenames:
@@ -51,7 +53,6 @@ if __name__ == '__main__':
                 result['leftHip']['coordinates'],
                 result['rightHip']['coordinates']
             )
-        print(data['ankle_distance'])
 
         dataset.append(data)
 

@@ -2,3 +2,4 @@
 **/__pycache__/
 /src/packages/pose_estimation/images/
 /src/packages/pose_estimation/dataset.json
+/src/packages/pose_estimation/_models/
