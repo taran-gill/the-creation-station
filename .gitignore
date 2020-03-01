@@ -1,1 +1,4 @@
 /Creation-Station-fb047bcb7c0b.json
+**/__pycache__/
+/src/packages/pose_estimation/images/
+/src/packages/pose_estimation/dataset.json

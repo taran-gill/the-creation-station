@@ -1,3 +1,4 @@
+import numpy as np
 import posenet
 import os
 import tensorflow as tf
@@ -36,34 +37,53 @@ class PoseEstimator:
             displacement_bwd_result.squeeze(axis=0),
             output_stride=self._output_stride,
             max_pose_detections=10,
-            min_pose_score=0.25)
+            min_pose_score=0.25
+        )
 
         keypoint_coords *= output_scale
         keypoint_coords = keypoint_coords[0]
         keypoint_scores = keypoint_scores[0]
 
         results = {}
-
         for i, (confidence, coordinates) in enumerate(zip(keypoint_scores, keypoint_coords)):
-            results[posenet.PART_NAMES[i]] = { 'confidence': confidence, 'coordinates': coordinates }
-
-        print(results)
+            # Coordinates are given in (Y, X) so we change them
+            results[posenet.PART_NAMES[i]] = { 'confidence': confidence, 'coordinates': (coordinates[1], coordinates[0]) }
+            print(posenet.PART_NAMES[i], confidence, coordinates)
 
         return results
 
-        # print('KEYPOINT_SCORES', keypoint_scores)
-        # print('KEYPOINT_COORDS', keypoint_coords)
-        # print('POSE_SCORES', pose_scores)
 
-        # print()
-        # print("Results for image: %s" % image_path)
-        # for pi in range(len(pose_scores)):
-        #     if pose_scores[pi] == 0.:
-        #         break
-        #     print('Pose #%d, score = %f' % (pi, pose_scores[pi]))
-        #     for ki, (s, c) in enumerate(zip(keypoint_scores[pi, :], keypoint_coords[pi, :, :])):
-        #         print('Keypoint %s, score = %f, coord = %s' % (posenet.PART_NAMES[ki], s, c))
+    @staticmethod
+    def get_elbow_angle(shoulder, elbow, wrist):
+        shoulder, elbow, wrist = np.array(shoulder), np.array(elbow), np.array(wrist)
 
-if __name__ == "__main__":
-    pose_estimator = PoseEstimator()
-    pose_estimator.get_frame_result('./images/open_gesture.jpg')
+        ba, bc = shoulder - elbow, wrist - elbow
+
+        cosine_angle = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
+        angle = np.arccos(cosine_angle)
+
+        return np.rad2deg(angle)
+
+
+    @staticmethod
+    def get_wrist_to_other_elbow_distance(wrist, other_elbow, left_shoulder, right_shoulder):
+        """
+        If distance of the wrist to the other elbow is small relative to the distance between shoulders,
+        the arms are crossed. If the distance is large, the arms are likely outstretched.
+        """
+        wrist_other_elbow_distance = np.linalg.norm(np.array(wrist) - np.array(other_elbow))
+        shoulder_distance = np.linalg.norm(np.array(left_shoulder) - np.array(right_shoulder))
+
+        return wrist_other_elbow_distance / shoulder_distance
+
+
+    @staticmethod
+    def get_ankle_distance(left_ankle, right_ankle, left_hip, right_hip):
+        """
+        Crossed legs tend to indicate untrustworthiness, while open legs indicate confidence.
+        """
+        ankle_distance = np.linalg.norm(np.array(left_ankle) - np.array(right_ankle))
+        hip_distance = np.linalg.norm(np.array(left_hip) - np.array(right_hip))
+
+        return ankle_distance / hip_distance
+
