@@ -89,7 +89,11 @@ class MediaCapturer extends React.Component {
     }
 
     onUpload = () => {
-        Connection.put('/upload', this.state.blob);
+        const formData = new FormData();
+        formData.append('video' , 'video.webm');
+        formData.append('video-blob', this.state.blob);
+
+        Connection.put('/upload', formData);
     }
 
     attachToVideoElement = () => {

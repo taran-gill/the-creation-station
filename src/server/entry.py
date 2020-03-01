@@ -1,6 +1,9 @@
-import os
+import cv2
 from flask import Flask, request
 from flask_cors import CORS as cors
+import os
+import tempfile
+
 
 app = Flask(__name__)
 cors(app)
@@ -20,7 +23,27 @@ def ping_pong():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    app.logger.info('Received request ' + str(len(request.get_data())) + ' bytes long')
+    video_file = request.files['video-blob']
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        print('Created temporary directory', temp_dir)
+
+        file_path = os.path.join(temp_dir, 'x.webm')
+        print(file_path)
+        video_file.save(file_path)
+        try:
+            cap = cv2.VideoCapture(file_path)
+            ret = True
+
+            while(ret and cap.isOpened()):
+                ret, frame = cap.read()
+                print(frame)
+            print('Video finished!')
+
+            cap.release()
+            cv2.destroyAllWindows()
+        except Exception as e:
+            print('Error: ', e)
 
     return 'Upload successful!'
 

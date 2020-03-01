@@ -15,7 +15,7 @@ class Connection {
     }
 
     static put = async (path, body) => {
-        const response = await fetch(hostname + path, { method: 'POST', body });
+        const response = await fetch(hostname + path, { method: 'POST', mode: 'no-cors', body });
 
         if (!response.ok) {
             return null;
