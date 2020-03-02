@@ -1,8 +1,11 @@
 import numpy as np
-from .posenet import posenet
 import os
 import tensorflow as tf
 
+try:
+    from .posenet import posenet
+except:
+    from posenet import posenet
 
 MODEL = 101
 SCALE = 1

@@ -3,7 +3,7 @@ FROM python:3.7.5-buster
 LABEL author=contact@tarangill.dev
 
 ENV PYTHONUNBUFFERED 1
-ENV FLASK_APP src/server/entry.py
+ENV FLASK_APP entry.py
 ENV FLASK_ENV development
 
 # System deps
@@ -16,4 +16,6 @@ COPY requirements.txt /api/
 RUN pip install -r requirements.txt
 COPY . /api/
 
-CMD ["python", "src/server/entry.py"]
+RUN python setup.py install --user
+
+CMD ["python", "entry.py"]
