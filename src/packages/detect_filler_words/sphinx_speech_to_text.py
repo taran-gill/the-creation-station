@@ -71,34 +71,34 @@ if __name__=='__main__':
     global filename
     start = time.time()
 
-    # if len(sys.argv)== 2:
+    if len(sys.argv)== 2:
     # if one argument provided, it's a filename 
     # and assume the data directory is the default data directory
-    #filename = sys.argv[1]
-    filename = "uhm.wav"
-    if file_in_correct_format(path.join(DATADIR, filename)):
-        segments = decode(DATADIR, filename)
-        new_list = preprocess_segments(segments)
-        print ('\n************* RESULTS ****************')
-        filler_words(new_list)
+        filename = sys.argv[1]
+        if file_in_correct_format(path.join(DATADIR, filename)):
+            segments = decode(DATADIR, filename)
+            new_list = preprocess_segments(segments)
+            print ('\n************* RESULTS ****************')
+            filler_words(new_list)
         
-    # elif len(sys.argv)==3:
-    #     # if two arguments provided, the first argument will be the data directory and the second the filename
-    #     datadir = sys.argv[1]
-    #     filename = sys.argv[2]
+    elif len(sys.argv)==3:
+        # if two arguments provided, the first argument will be the data directory and the second the filename
+        datadir = sys.argv[1]
+        filename = sys.argv[2]
         
-    #     if file_in_correct_format(path.join(datadir, filename)):
-    #         segments = decode(datadir, filename)
-    #         new_list = preprocess_segments(segments)
-    #         print ('\n************* RESULTS ****************')
-    #         filler_words(new_list)
-    # else:
-    #     # if no args provided, run the decoder on all files in the default DATADIR
-    #     # this assumes there are only .wav files in the directory (not including
-    #     # other directories. throws an error if 
-    #     for f in listdir(DATADIR):
-    #         if not f.startswith('.') and path.isfile(path.join(DATADIR, f)):
-    #             if file_in_correct_format(path.join(DATADIR, f)):
-    #                 decode(DATADIR, f)
+        if file_in_correct_format(path.join(datadir, filename)):
+            segments = decode(datadir, filename)
+            new_list = preprocess_segments(segments)
+            print ('\n************* RESULTS ****************')
+            filler_words(new_list)
+    else:
+        # test on default file
+        filename = "uhm.wav"
+        if file_in_correct_format(path.join(DATADIR, filename)):
+            segments = decode(DATADIR, filename)
+            new_list = preprocess_segments(segments)
+            print ('\n************* RESULTS ****************')
+            filler_words(new_list)
+
     end = time.time()
     print ('time elapsed:' +  str(end - start))

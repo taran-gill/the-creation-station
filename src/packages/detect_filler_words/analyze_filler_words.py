@@ -17,7 +17,7 @@ def preprocess_segments(segments):
     '''
     new_list = [] 
     for word in segments:
-        if not (word == '<sil>' or word == '<s>' or word == '</s>' or word == '[NOISE]'):
+        if not (word == '<s>' or word == '</s>' or word == '[NOISE]'):
             if "(" in word:
                 new_list.append(word.split("(")[0])
             else:
@@ -37,15 +37,18 @@ def filler_words(segments, filler='[SPEECH]'):
         
     num_filler = segments.count(filler)
     num_filler += segments.count('ah')
+    sil_map = segments.count('<sil>')
+    num_filler += round(sil_map/3)
     total_words = len(segments)
+    
     print ('total_words:', total_words)
-    if filler == '[SPEECH]':
-        filler = 'um or uh' # for better printing in the results
-    print ('number of ', filler,'said:', num_filler)
+    print ('number of filler words said:', num_filler)
+
     percent = num_filler/total_words
     print ('percent of filler words', percent)
     print ('compared to TED standard frequency of filler words (0.005589%)...')
     compare_to_standard(percent, 0.005589) # gold standard is hard coded into the program right now
+    
     return percent
     
 def compare_to_standard(percent, standard):
