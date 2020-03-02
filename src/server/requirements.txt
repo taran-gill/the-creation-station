@@ -15,6 +15,7 @@ numpy==1.17.4
 opencv-python==3.4.5.20
 opt-einsum==3.1.0
 pandas>=1.0.1
+pocketsphinx==0.1.15
 protobuf==3.10.0
 pydub==0.23.1
 pytest>=5.0.0
