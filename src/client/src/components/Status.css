@@ -1,4 +1,9 @@
-.connected .mdc-snackbar__surface {
+.mdc-snackbar__surface {
+    text-align: center;
+    min-width: unset !important;
+}
+
+.info .mdc-snackbar__surface {
     background-color: rgba(0, 214, 0, 0.8);
 }
 
