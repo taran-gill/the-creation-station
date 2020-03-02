@@ -89,18 +89,22 @@ class MediaCapturer extends React.Component {
     }
 
     onUpload = () => {
+        const displayError = (err) => {
+            this.props.changeStatusMessage('Upload failed.', 'error');
+            if (err) console.error(err);
+        }
+
         const formData = new FormData();
         formData.append('video' , 'video.webm');
         formData.append('video-blob', this.state.blob);
 
         Connection.put('/upload', formData)
             .then(res => {
+                if (!res) return displayError();
+
                 this.props.changeStatusMessage('Successfully uploaded!');
             })
-            .catch(err => {
-                this.props.changeStatusMessage('Upload failed.', 'error');
-                console.error(err);
-            });
+            .catch(displayError);
     }
 
     attachToVideoElement = () => {
