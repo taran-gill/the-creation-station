@@ -32,10 +32,29 @@ class AudioIntensityAnalyzer:
             return self._cache['thresholds'][cache_key]
 
         sound = np.array([s.rms for s in self._sound[::chunk_length]])
+        #print(sound)
         quantile_value = np.quantile(sound, threshold_quantile)
 
         self._cache['thresholds'][cache_key] = quantile_value
         return quantile_value
+    
+    def get_loudness(self, chunk_length):
+
+        threshold = self.get_rms_threshold(1000, 0.8)
+        #rms = 10000
+        #self._cache[chunk_length]
+        #elem.rms
+        result = []
+        sound = np.array([s.rms for s in self._sound[::chunk_length]])
+        print(sound)
+        print(threshold)
+        for rms in sound:
+            if rms > threshold:
+                result.append("LOUD")
+            else: 
+                result.append("Not_loud")
+
+        return result    
 
 
 if __name__ == '__main__':
@@ -46,7 +65,10 @@ if __name__ == '__main__':
 
     audio_intensity_analyzer = AudioIntensityAnalyzer(file_path)
 
-    print(audio_intensity_analyzer.get_average_root_mean_square(1000))
-    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
+    #print(audio_intensity_analyzer.get_average_root_mean_square(1000))
+    #print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
     print(audio_intensity_analyzer.get_rms_threshold(1000, 0.8))
-    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))
+    #print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))
+
+    res = audio_intensity_analyzer.get_loudness(1000)
+    print (res, 'as')
