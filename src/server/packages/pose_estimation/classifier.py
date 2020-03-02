@@ -1,18 +1,20 @@
 import json
 import numpy as np
+from os import path
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import KNeighborsClassifier
 
+dataset_path = path.join(path.dirname(path.realpath(__file__)), 'dataset.json')
 
-with open('dataset.json', 'r', encoding='utf-8') as fd:
+with open(dataset_path, 'r', encoding='utf-8') as fd:
     dataset = json.load(fd)
 
 FEATURES = [feature for feature in dataset[0] if feature != 'pose']
 
-poses = pd.read_json('dataset.json')
+poses = pd.read_json(dataset_path)
 poses.head()
 
 X_train, X_test, y_train, y_test = train_test_split(poses[FEATURES], poses['pose'], random_state=0)

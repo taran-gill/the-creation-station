@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-import posenet.constants
+from .constants import *
 
 
 def valid_resolution(width, height, output_stride=16):

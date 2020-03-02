@@ -1,2 +1,2 @@
-from classifier import knn
-from estimator import PoseEstimator
+from .classifier import knn
+from .estimator import PoseEstimator

@@ -1,6 +1,6 @@
 import numpy as np
 
-from posenet.constants import *
+from .constants import *
 
 
 def traverse_to_targ_keypoint(

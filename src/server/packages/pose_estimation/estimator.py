@@ -1,5 +1,5 @@
 import numpy as np
-import posenet
+from posenet import posenet
 import os
 import tensorflow as tf
 
@@ -53,7 +53,19 @@ class PoseEstimator:
 
 
     @staticmethod
-    def get_elbow_angle(shoulder, elbow, wrist):
+    def get_elbow_angles(pose, scaled=True):
+        left = PoseEstimator._get_elbow_angle(pose, 'left') / (180 if scaled else 1)
+        right = PoseEstimator._get_elbow_angle(pose, 'right') / (180 if scaled else 1)
+        return left, right
+
+
+    @staticmethod
+    def _get_elbow_angle(pose, side):
+        shoulder, elbow, wrist = \
+            pose[side + 'Shoulder']['coordinates'], \
+            pose[side + 'Elbow']['coordinates'], \
+            pose[side + 'Wrist']['coordinates']
+
         shoulder, elbow, wrist = np.array(shoulder), np.array(elbow), np.array(wrist)
 
         ba, bc = shoulder - elbow, wrist - elbow
@@ -65,22 +77,53 @@ class PoseEstimator:
 
 
     @staticmethod
-    def get_wrist_to_other_elbow_distance(wrist, other_elbow, left_shoulder, right_shoulder):
+    def get_wrist_to_other_elbow_distances(pose, scaled=True):
         """
         If distance of the wrist to the other elbow is small relative to the distance between shoulders,
         the arms are crossed. If the distance is large, the arms are likely outstretched.
         """
-        wrist_other_elbow_distance = np.linalg.norm(np.array(wrist) - np.array(other_elbow))
-        shoulder_distance = np.linalg.norm(np.array(left_shoulder) - np.array(right_shoulder))
-
-        return wrist_other_elbow_distance / shoulder_distance
+        left = PoseEstimator._get_wrist_to_other_elbow_distance(pose, 'left') / (3.6 if scaled else 1)
+        right = PoseEstimator._get_wrist_to_other_elbow_distance(pose, 'right') / (3.6 if scaled else 1)
+        return left, right
 
 
     @staticmethod
-    def get_ankle_distance(left_ankle, right_ankle, left_hip, right_hip):
+    def _get_wrist_to_other_elbow_distance(pose, side):
+        """
+        If distance of the wrist to the other elbow is small relative to the distance between shoulders,
+        the arms are crossed. If the distance is large, the arms are likely outstretched.
+        """
+        other_side = 'left' if side == 'right' else 'right'
+
+        left_shoulder, right_shoulder, other_elbow, wrist = \
+            pose['leftShoulder']['coordinates'], \
+            pose['rightShoulder']['coordinates'], \
+            pose[other_side + 'Elbow']['coordinates'], \
+            pose[side + 'Wrist']['coordinates']
+
+        wrist_other_elbow_distance = np.linalg.norm(np.array(wrist) - np.array(other_elbow))
+        shoulder_distance = np.linalg.norm(np.array(left_shoulder) - np.array(right_shoulder))
+
+        return (wrist_other_elbow_distance / shoulder_distance)
+
+
+    @staticmethod
+    def get_ankle_distance(pose, scaled=True):
         """
         Crossed legs tend to indicate untrustworthiness, while open legs indicate confidence.
         """
+        left_ankle_confidence, right_ankle_confidence = \
+            pose['leftAnkle']['confidence'], pose['rightAnkle']['confidence'],
+
+        if left_ankle_confidence < 0.5 or right_ankle_confidence < 0.5:
+            return 0.9
+
+        left_ankle, right_ankle, left_hip, right_hip = \
+            pose['leftAnkle']['coordinates'], \
+            pose['rightAnkle']['coordinates'], \
+            pose['leftHip']['coordinates'], \
+            pose['rightHip']['coordinates']
+
         ankle_distance = np.linalg.norm(np.array(left_ankle) - np.array(right_ankle))
         hip_distance = np.linalg.norm(np.array(left_hip) - np.array(right_hip))
 
