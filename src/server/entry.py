@@ -3,7 +3,13 @@ from flask import Flask, request
 from flask_cors import CORS as cors
 import os
 import tempfile
-from packages.pose_estimation.classifier import knn_predict, PoseEstimator
+from packages.pose_estimation.classifier import PoseClassifier, PoseEstimator
+
+
+# Don't bother showing info/warnings from TF (it clogs the logs)
+import tensorflow as tf
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' # Disable info (1) and warnings (2)
 
 
 pose_estimator = PoseEstimator()
@@ -29,11 +35,9 @@ def upload():
     video_file = request.files['video-blob']
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        print('Created temporary directory', temp_dir)
-
-        file_path = os.path.join(temp_dir, 'x.webm')
-        print(file_path)
+        file_path = os.path.join(temp_dir, 'presentation.webm')
         video_file.save(file_path)
+
         try:
             cap = cv2.VideoCapture(file_path)
             ret = True
@@ -44,8 +48,10 @@ def upload():
                     break
 
                 result = pose_estimator.get_frame_result(frame)
+                if result['nose']['confidence'] == 0:
+                    continue
 
-                knn_predict(result)
+                print(PoseClassifier.predict(result))
             print('Video finished!')
 
             cap.release()
