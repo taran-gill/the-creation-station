@@ -4,19 +4,18 @@ services:
   api:
     image: creation_station_api:latest
     build:
-      context: .
-      dockerfile: config/api.Dockerfile
+      context: ./src/server
+      dockerfile: ../../config/api.Dockerfile
     ports:
       - "5000:5000"
     volumes:
-      - .:/api
-      - /api/client # Don't copy over client code
+      - ./src/server:/api
 
   web:
     image: creation_station_web:latest
     build:
-      context: .
-      dockerfile: config/web.Dockerfile
+      context: ./src/client
+      dockerfile: ../../config/web.Dockerfile
     ports:
       - "3000:3000"
     volumes:

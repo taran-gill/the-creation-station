@@ -3,7 +3,7 @@ FROM python:3.7.5-buster
 LABEL author=contact@tarangill.dev
 
 ENV PYTHONUNBUFFERED 1
-ENV FLASK_APP src/server/entry.py
+ENV FLASK_APP entry.py
 ENV FLASK_ENV development
 
 # System deps
@@ -18,9 +18,9 @@ ENV SPHINXBASE   sphinxbase-5prealpha
 ENV POCKETSPHINX pocketsphinx-5prealpha
 ENV SPHINXTRAIN  sphinxtrain-5prealpha
 
-ADD ./src/packages/detect_filler_words/config/setup/sphinx/${SPHINXBASE}.tar.gz   /sphinx/
-ADD ./src/packages/detect_filler_words/config/setup/sphinx/${POCKETSPHINX}.tar.gz /sphinx/
-ADD ./src/packages/detect_filler_words/config/setup/sphinx/${SPHINXTRAIN}.tar.gz  /sphinx/
+ADD ./packages/detect_filler_words/config/setup/sphinx/${SPHINXBASE}.tar.gz   /sphinx/
+ADD ./packages/detect_filler_words/config/setup/sphinx/${POCKETSPHINX}.tar.gz /sphinx/
+ADD ./packages/detect_filler_words/config/setup/sphinx/${SPHINXTRAIN}.tar.gz  /sphinx/
 
 RUN mv /sphinx/${SPHINXBASE} /sphinx/sphinxbase && \
     mv /sphinx/${POCKETSPHINX} /sphinx/pocketsphinx && \
@@ -45,4 +45,6 @@ COPY . /api/
 
 ENV PYTHONPATH /usr/local/lib/python3.4/site-packages
 
-CMD ["python", "src/server/entry.py"]
+RUN python setup.py install --user
+
+CMD ["python", "entry.py"]
