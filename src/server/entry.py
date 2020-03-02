@@ -3,7 +3,10 @@ from flask import Flask, request
 from flask_cors import CORS as cors
 import os
 import tempfile
+from packages.pose_estimation.classifier import knn_predict, PoseEstimator
 
+
+pose_estimator = PoseEstimator()
 
 app = Flask(__name__)
 cors(app)
@@ -35,9 +38,14 @@ def upload():
             cap = cv2.VideoCapture(file_path)
             ret = True
 
-            while(ret and cap.isOpened()):
+            while(cap.isOpened()):
                 ret, frame = cap.read()
-                print(frame)
+                if not ret:
+                    break
+
+                result = pose_estimator.get_frame_result(frame)
+
+                knn_predict(result)
             print('Video finished!')
 
             cap.release()

@@ -34,6 +34,10 @@ def read_imgfile(path, scale_factor=1.0, output_stride=16):
     return _process_input(img, scale_factor, output_stride)
 
 
+def read_frame(frame, scale_factor=1.0, output_stride=16):
+    return _process_input(frame, scale_factor, output_stride)
+
+
 def draw_keypoints(
         img, instance_scores, keypoint_scores, keypoint_coords,
         min_pose_confidence=0.5, min_part_confidence=0.5):

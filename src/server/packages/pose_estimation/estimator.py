@@ -1,5 +1,5 @@
 import numpy as np
-from posenet import posenet
+from .posenet import posenet
 import os
 import tensorflow as tf
 
@@ -18,13 +18,26 @@ class PoseEstimator:
         self._output_stride = model_cfg['output_stride']
 
 
-    def get_frame_result(self, image_path):
+    def get_image_file_result(self, image_path):
         input_image, draw_image, output_scale = posenet.read_imgfile(
             image_path,
             scale_factor=SCALE,
             output_stride=self._output_stride
         )
 
+        return self._get_frame_result(input_image, draw_image, output_scale)
+
+
+    def get_frame_result(self, frame):
+        input_image, draw_image, output_scale = posenet.read_frame(
+            frame,
+            scale_factor=SCALE,
+            output_stride=self._output_stride
+        )
+
+        return self._get_frame_result(input_image, draw_image, output_scale)
+
+    def _get_frame_result(self, input_image, draw_image, output_scale):
         heatmaps_result, offsets_result, displacement_fwd_result, displacement_bwd_result = self._session.run(
             self._model_outputs,
             feed_dict={'image:0': input_image}

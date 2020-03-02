@@ -14,6 +14,10 @@ packages/pose_estimation/posenet/decode_multi.py
 packages/pose_estimation/posenet/model.py
 packages/pose_estimation/posenet/posenet.py
 packages/pose_estimation/posenet/utils.py
+packages/pose_estimation/posenet/converter/__init__.py
+packages/pose_estimation/posenet/converter/config.py
+packages/pose_estimation/posenet/converter/tfjs2python.py
+packages/pose_estimation/posenet/converter/wget.py
 the_creation_station.egg-info/PKG-INFO
 the_creation_station.egg-info/SOURCES.txt
 the_creation_station.egg-info/dependency_links.txt

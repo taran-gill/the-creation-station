@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
     for f in filenames:
         print(f)
-        result = pose_estimator.get_frame_result(f)
+        result = pose_estimator.get_image_file_result(f)
 
         pose = f.split('./images/')[1].split('_')[0]
 

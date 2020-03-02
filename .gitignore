@@ -2,6 +2,6 @@
 **/__pycache__/
 /src/server/packages/pose_estimation/images/
 /src/server/packages/pose_estimation/dataset.json
-/src/server/_models/
+/**/_models/
 /src/server/build/
 /src/server/dist/

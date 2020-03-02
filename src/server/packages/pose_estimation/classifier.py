@@ -7,6 +7,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import KNeighborsClassifier
 
+from .estimator import PoseEstimator
+
 dataset_path = path.join(path.dirname(path.realpath(__file__)), 'dataset.json')
 
 with open(dataset_path, 'r', encoding='utf-8') as fd:
@@ -39,3 +41,15 @@ print('Accuracy of K-NN classifier on test set: {:.2f}'
 
 x = knn.predict([[0.17528203799986225, 0.22766950714831652, 0.27189179513486567, 0.22138988155591524, 0.9]])
 print(x)
+
+def knn_predict(pose):
+    data = [None] * 5
+
+    data[0], data[1] = PoseEstimator.get_elbow_angles(pose, scaled=True)
+
+    data[2], data[3] = \
+        PoseEstimator.get_wrist_to_other_elbow_distances(pose, scaled=True)
+
+    data[4] = PoseEstimator.get_ankle_distance(pose, scaled=True)
+
+    print(knn.predict([data]))
