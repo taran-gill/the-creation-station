@@ -20,7 +20,7 @@ class NavBar extends React.Component {
                         <TopAppBarSection>
                             <a href='/'>
                                 <img src={Logo} className='navbar__logo' alt='logo'/>
-                                <TopAppBarTitle className='navbar__title'>THE CREATION STATION</TopAppBarTitle>
+                                <TopAppBarTitle className='navbar__title'>THE PRESENTATION CREATION STATION</TopAppBarTitle>
                             </a>
                         </TopAppBarSection>
                         <TopAppBarSection alignEnd>
