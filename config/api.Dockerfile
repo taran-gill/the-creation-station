@@ -38,13 +38,18 @@ WORKDIR /sphinx/sphinxtrain
 RUN ./configure
 RUN make && make check && make installcheck
 
+ENV PYTHONPATH /usr/local/lib/python3.4/site-packages
+
 WORKDIR /api
 COPY requirements.txt /api/
 RUN pip install -r requirements.txt
 COPY . /api/
 
-ENV PYTHONPATH /usr/local/lib/python3.4/site-packages
-
 RUN python setup.py install --user
 
+WORKDIR /api/packages/pose_estimation
+ENV POSE_DATASET_PATH /usr/local/lib/dataset.json
+RUN python _generate_dataset.py
+
+WORKDIR /api
 CMD ["python", "entry.py"]

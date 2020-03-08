@@ -29,5 +29,5 @@ if __name__ == '__main__':
 
         dataset.append(data)
 
-    with open('dataset.json', 'w', encoding='utf-8') as f:
+    with open(os.environ['POSE_DATASET_PATH'], 'w', encoding='utf-8') as f:
         json.dump(dataset, f, ensure_ascii=False, indent=4)
