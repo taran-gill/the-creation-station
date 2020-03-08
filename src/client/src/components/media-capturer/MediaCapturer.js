@@ -98,13 +98,16 @@ class MediaCapturer extends React.Component {
         formData.append('video' , 'video.webm');
         formData.append('video-blob', this.state.blob);
 
+        this.props.updateLoadingOverlay(true, 'Number crunching...');
+
         Connection.put('/upload', formData)
             .then(res => {
                 if (!res) return displayError();
 
                 this.props.changeStatusMessage('Successfully uploaded!');
             })
-            .catch(displayError);
+            .catch(displayError)
+            .finally(() => this.props.updateLoadingOverlay(false));
     }
 
     attachToVideoElement = () => {

@@ -1,4 +1,6 @@
 import React from 'react';
+import LoadingOverlay from 'react-loading-overlay';
+import RingLoader from 'react-spinners/RingLoader';
 
 import Connection from './connection';
 
@@ -6,11 +8,15 @@ import { NavBar } from './components/NavBar';
 import { MediaCapturer } from './components/media-capturer/MediaCapturer';
 import { Status } from './components/Status';
 
+import './App.css';
+
 class App extends React.Component {
     state = {
         statusMessage: null,
         messageLevel: 'info',
         statusOpen: false,
+        loading: true,
+        loadingMessage: 'Establishing connection to server...'
     }
 
     componentDidMount() {
@@ -21,11 +27,12 @@ class App extends React.Component {
     
         Connection.get('/ping')
             .then(res => {
-                res === 'pong' ?
-                    this._changeStatusMessage('Connection to server established!') :
-                    displayErr(res);
+                if (res !== 'pong') displayErr(res);
             })
-            .catch(displayErr);
+            .catch(displayErr)
+            .finally(() => {
+                this._updateLoadingOverlay(false);
+            })
     }
 
     _changeStatusMessage = (statusMessage, messageLevel = 'info') => {
@@ -34,9 +41,22 @@ class App extends React.Component {
 
     _closeStatusMessage = () => { this.setState({ statusOpen: false }) }
 
+    _updateLoadingOverlay = (isLoading, loadingMessage = '') => {
+        this.setState({ loading: isLoading, loadingMessage });
+    }
+
     render() {
         return (
-            <React.Fragment>
+            <LoadingOverlay
+                active={this.state.loading}
+                spinner={
+                    <RingLoader
+                        color={'#ffffff'}
+                        css='margin: auto; margin-bottom: 15px;'
+                    />
+                }
+                text={this.state.loadingMessage}
+            >
                 <NavBar />
                 <Status
                     statusMessage={this.state.statusMessage}
@@ -44,8 +64,11 @@ class App extends React.Component {
                     statusOpen={this.state.statusOpen}
                     closeStatusMessage={this._closeStatusMessage}
                 />
-                <MediaCapturer changeStatusMessage={this._changeStatusMessage} />
-            </React.Fragment>
+                <MediaCapturer
+                    changeStatusMessage={this._changeStatusMessage}
+                    updateLoadingOverlay={this._updateLoadingOverlay}
+                />
+            </LoadingOverlay>
         );
     }
 
