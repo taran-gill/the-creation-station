@@ -16,10 +16,23 @@ class App extends React.Component {
         messageLevel: 'info',
         statusOpen: false,
         loading: true,
-        loadingMessage: 'Establishing connection to server...'
+        loadingMessage: 'Establishing connection to server'
     }
 
     componentDidMount() {
+        setInterval(() => {
+            if (this.state.loadingMessage.charAt(this.state.loadingMessage.length - 3) === '.') {
+                this.setState({
+                    loadingMessage: this.state.loadingMessage.substring(0, this.state.loadingMessage.length - 3)
+                });
+                return;
+            }
+            
+            this.setState({
+                loadingMessage: this.state.loadingMessage + '.'
+            })
+        }, 1000);
+
         const displayErr = (error) => {
             this._changeStatusMessage('Unable to establish connection to server.', 'error');
             console.error('Unable to establish connection to server.', error);
