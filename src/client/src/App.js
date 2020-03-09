@@ -20,7 +20,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        setInterval(() => {
+        this.intervalId = setInterval(() => {
             if (this.state.loadingMessage.charAt(this.state.loadingMessage.length - 3) === '.') {
                 this.setState({
                     loadingMessage: this.state.loadingMessage.substring(0, this.state.loadingMessage.length - 3)
@@ -46,6 +46,10 @@ class App extends React.Component {
             .finally(() => {
                 this._updateLoadingOverlay(false);
             })
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalId);
     }
 
     _changeStatusMessage = (statusMessage, messageLevel = 'info') => {
