@@ -1,7 +1,9 @@
 import cv2
 import ffmpeg
 import os
+
 from packages.pose_estimation.classifier import PoseClassifier, PoseEstimator
+from utils.profiler import line_profile
 
 
 # Don't bother showing info/warnings from TF (it clogs the logs)
@@ -22,6 +24,7 @@ class Runner:
     def get_audio_intensity(self):
         pass
 
+    @line_profile
     def get_poses(self):
         cap = cv2.VideoCapture(self._file_path)
         ret = True

@@ -41,8 +41,8 @@ RUN make && make check && make installcheck
 ENV PYTHONPATH /usr/local/lib/python3.4/site-packages
 
 WORKDIR /api
-COPY requirements.txt /api/
-RUN pip install -r requirements.txt
+COPY requirements/ /api/
+RUN pip install -r dev.txt
 COPY . /api/
 
 RUN python setup.py install --user
