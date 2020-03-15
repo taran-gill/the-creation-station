@@ -1,6 +1,7 @@
-from estimator import PoseEstimator
 import json
+import numpy as np
 import os
+from estimator import PoseEstimator
 
 
 if __name__ == '__main__':
@@ -27,7 +28,16 @@ if __name__ == '__main__':
 
         data['ankle_distance'] = PoseEstimator.get_ankle_distance(result, scaled=True)
 
+        if np.isnan(data['left_elbow_angle']) or np.isnan(data['right_elbow_angle']) or \
+                np.isnan(data['left_wrist_right_elbow_distance']) or \
+                np.isnan(data['right_wrist_left_elbow_distance']) or \
+                np.isnan(data['ankle_distance']):
+            print('ERROR: Unable to generate features for', f)
+            continue
+
+        print('Generated features for', f)
         dataset.append(data)
 
     with open(os.environ['POSE_DATASET_PATH'], 'w', encoding='utf-8') as f:
+        print('Generated dataset', len(dataset), 'images')
         json.dump(dataset, f, ensure_ascii=False, indent=4)
