@@ -20,16 +20,16 @@ class PoseEstimator:
         model_cfg, self._model_outputs = posenet.load_model(MODEL, self._session)
         self._output_stride = model_cfg['output_stride']
 
+    def get_image_file_result(self, image_path, **kwargs):
+        output_stride = min(kwargs.get('output_stride', 32), self._output_stride)
 
-    def get_image_file_result(self, image_path):
         input_image, draw_image, output_scale = posenet.read_imgfile(
             image_path,
             scale_factor=SCALE,
-            output_stride=self._output_stride
+            output_stride=output_stride
         )
 
         return self._get_frame_result(input_image, draw_image, output_scale)
-
 
     def get_frame_result(self, frame):
         input_image, draw_image, output_scale = posenet.read_frame(
@@ -63,17 +63,15 @@ class PoseEstimator:
         results = {}
         for i, (confidence, coordinates) in enumerate(zip(keypoint_scores, keypoint_coords)):
             # Coordinates are given in (Y, X) so we change them
-            results[posenet.PART_NAMES[i]] = { 'confidence': confidence, 'coordinates': (coordinates[1], coordinates[0]) }
+            results[posenet.PART_NAMES[i]] = {'confidence': confidence, 'coordinates': (coordinates[1], coordinates[0])}
 
         return results
 
-
     @staticmethod
-    def get_elbow_angles(pose, scaled=True):
-        left = PoseEstimator._get_elbow_angle(pose, 'left') / (180 if scaled else 1)
-        right = PoseEstimator._get_elbow_angle(pose, 'right') / (180 if scaled else 1)
+    def get_elbow_angles(pose, **kwargs):
+        left = PoseEstimator._get_elbow_angle(pose, 'left') / (180 if kwargs.get('scaled', True) else 1)
+        right = PoseEstimator._get_elbow_angle(pose, 'right') / (180 if kwargs.get('scaled', True) else 1)
         return left, right
-
 
     @staticmethod
     def _get_elbow_angle(pose, side):
@@ -91,17 +89,17 @@ class PoseEstimator:
 
         return np.rad2deg(angle)
 
-
     @staticmethod
-    def get_wrist_to_other_elbow_distances(pose, scaled=True):
+    def get_wrist_to_other_elbow_distances(pose, **kwargs):
         """
         If distance of the wrist to the other elbow is small relative to the distance between shoulders,
         the arms are crossed. If the distance is large, the arms are likely outstretched.
         """
-        left = PoseEstimator._get_wrist_to_other_elbow_distance(pose, 'left') / (3.6 if scaled else 1)
-        right = PoseEstimator._get_wrist_to_other_elbow_distance(pose, 'right') / (3.6 if scaled else 1)
+        left = PoseEstimator._get_wrist_to_other_elbow_distance(pose, 'left') / \
+            (3.6 if kwargs.get('scaled', True) else 1)
+        right = PoseEstimator._get_wrist_to_other_elbow_distance(pose, 'right') / \
+            (3.6 if kwargs.get('scaled', True) else 1)
         return left, right
-
 
     @staticmethod
     def _get_wrist_to_other_elbow_distance(pose, side):
@@ -122,9 +120,8 @@ class PoseEstimator:
 
         return (wrist_other_elbow_distance / shoulder_distance)
 
-
     @staticmethod
-    def get_ankle_distance(pose, scaled=True):
+    def get_ankle_distance(pose, **kwargs):
         """
         Crossed legs tend to indicate untrustworthiness, while open legs indicate confidence.
         """
@@ -144,4 +141,3 @@ class PoseEstimator:
         hip_distance = np.linalg.norm(np.array(left_hip) - np.array(right_hip))
 
         return ankle_distance / hip_distance
-
