@@ -25,15 +25,16 @@ def ping_pong():
 @app.route('/upload', methods=['POST'])
 def upload():
     video_file = request.files['video-blob']
+    video_file.save(os.getcwd())
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        file_path = os.path.join(temp_dir, 'presentation.webm')
-        video_file.save(file_path)
+    # with tempfile.TemporaryDirectory() as temp_dir:
+    #     file_path = os.path.join(temp_dir, 'presentation.webm')
+    #     video_file.save(file_path)
 
-        try:
-            results = Runner(file_path)
-        except Exception as e:
-            print('Error: ', e)
+    #     try:
+    #         results = Runner(file_path)
+    #     except Exception as e:
+    #         print('Error: ', e)
 
     return 'Upload successful!'
 
