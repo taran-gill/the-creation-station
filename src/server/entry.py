@@ -25,7 +25,7 @@ def ping_pong():
 @app.route('/upload', methods=['POST'])
 def upload():
     video_file = request.files['video-blob']
-    video_file.save(os.getcwd())
+    video_file.save(os.path.join(os.getcwd(), 'presentation.webm'))
 
     # with tempfile.TemporaryDirectory() as temp_dir:
     #     file_path = os.path.join(temp_dir, 'presentation.webm')
