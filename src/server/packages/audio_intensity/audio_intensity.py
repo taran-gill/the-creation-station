@@ -39,14 +39,14 @@ class AudioIntensityAnalyzer:
 
 
 if __name__ == '__main__':
-    file = 'dolphins.mp3' if len(sys.argv) < 2 else sys.argv[1]
+    # file = 'dolphins.mp3' if len(sys.argv) < 2 else sys.argv[1]
 
-    script_path = os.path.abspath(os.path.join(__file__, '../../../', 'fixtures/'))
-    file_path = os.path.join(script_path, file)
+    # script_path = os.path.abspath(os.path.join(__file__, '../../../', 'fixtures/'))
+    # file_path = os.path.join(script_path, file)
 
-    audio_intensity_analyzer = AudioIntensityAnalyzer(file_path)
+    # audio_intensity_analyzer = AudioIntensityAnalyzer(file_path)
 
-    print(audio_intensity_analyzer.get_average_root_mean_square(1000))
-    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
-    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.8))
-    print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))
+    # print(audio_intensity_analyzer.get_average_root_mean_square(1000))
+    # print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
+    # print(audio_intensity_analyzer.get_rms_threshold(1000, 0.8))
+    # print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))

@@ -18,9 +18,9 @@ ENV SPHINXBASE   sphinxbase-5prealpha
 ENV POCKETSPHINX pocketsphinx-5prealpha
 ENV SPHINXTRAIN  sphinxtrain-5prealpha
 
-ADD ./packages/detect_filler_words/config/setup/sphinx/${SPHINXBASE}.tar.gz   /sphinx/
-ADD ./packages/detect_filler_words/config/setup/sphinx/${POCKETSPHINX}.tar.gz /sphinx/
-ADD ./packages/detect_filler_words/config/setup/sphinx/${SPHINXTRAIN}.tar.gz  /sphinx/
+ADD ./src/server/packages/detect_filler_words/config/setup/sphinx/${SPHINXBASE}.tar.gz   /sphinx/
+ADD ./src/server/packages/detect_filler_words/config/setup/sphinx/${POCKETSPHINX}.tar.gz /sphinx/
+ADD ./src/server/packages/detect_filler_words/config/setup/sphinx/${SPHINXTRAIN}.tar.gz  /sphinx/
 
 RUN mv /sphinx/${SPHINXBASE} /sphinx/sphinxbase && \
     mv /sphinx/${POCKETSPHINX} /sphinx/pocketsphinx && \

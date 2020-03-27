@@ -1,6 +1,7 @@
 import cv2
 import ffmpeg
 import os
+import subprocess
 
 from packages.pose_estimation.classifier import PoseClassifier, PoseEstimator
 from utils.profiler import line_profile
@@ -18,11 +19,19 @@ pose_estimator = PoseEstimator()
 class Runner:
     def __init__(self, file_path):
         self._file_path = file_path
-
-        self.get_poses()
+        self.get_audio_intensity()
+        #self.get_poses()
 
     def get_audio_intensity(self):
-        pass
+        filed = self._file_path
+        command = "ffmpeg -i filed -vn -acodec copy output-audio.mp3"
+        subprocess.call(command, shell=True)
+        # audio_intensity_analyzer = AudioIntensityAnalyzer(audio)
+
+        # print(audio_intensity_analyzer.get_average_root_mean_square(1000))
+        # print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
+        # print(audio_intensity_analyzer.get_rms_threshold(1000, 0.8))
+        # print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))
 
     @line_profile
     def get_poses(self):
