@@ -32,11 +32,11 @@ class Runner:
         print('DEBUG: Frame rate is', self._frame_rate)
 
         audio_intensity_analyzer = AudioIntensityAnalyzer(mp4_path)
-
-        print(audio_intensity_analyzer.get_average_root_mean_square(1000))
-        print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
-        print(audio_intensity_analyzer.get_rms_threshold(1000, 0.8))
-        print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))
+        print(audio_intensity_analyzer.get_loudness(1/self._frame_rate) 
+        print(audio_intensity_analyzer.get_average_root_mean_square(1/self._frame_rate))
+        print(audio_intensity_analyzer.get_rms_threshold((1/self._frame_rate), 0.5))
+        print(audio_intensity_analyzer.get_rms_threshold((1/self._frame_rate), 0.8))
+        print(audio_intensity_analyzer.get_rms_threshold((1/self._frame_rate), 0.9))
 
     def get_audio_intensity(self):
         pass
