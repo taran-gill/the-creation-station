@@ -1,8 +1,11 @@
 import cv2
 import ffmpeg
 import os
+import sys
+import tempfile
 
 from packages.pose_estimation.classifier import PoseClassifier, PoseEstimator
+from packages.audio_intensity.audio_intensity import AudioIntensityAnalyzer
 from utils.profiler import line_profile
 
 
@@ -16,17 +19,30 @@ pose_estimator = PoseEstimator()
 
 
 class Runner:
-    def __init__(self, file_path):
-        self._file_path = file_path
+    _total_frames = None
+    _frame_rate = None
 
-        self.get_poses()
+    def __init__(self, **kwargs):
+        mp4_path = kwargs.get('mp4_path')
+        wav_path = kwargs.get('wav_path')
+
+        self.get_poses(mp4_path)
+
+        # START EDITING STUFF HERE
+        print('DEBUG: Frame rate is', self._frame_rate)
+
+        audio_intensity_analyzer = AudioIntensityAnalyzer(mp4_path)
+
+        print(audio_intensity_analyzer.get_average_root_mean_square(1000))
+        print(audio_intensity_analyzer.get_rms_threshold(1000, 0.5))
+        print(audio_intensity_analyzer.get_rms_threshold(1000, 0.8))
+        print(audio_intensity_analyzer.get_rms_threshold(1000, 0.9))
 
     def get_audio_intensity(self):
         pass
 
-    @line_profile
-    def get_poses(self):
-        cap = cv2.VideoCapture(self._file_path)
+    def get_poses(self, file_path):
+        cap = cv2.VideoCapture(file_path)
         ret = True
 
         print('Beginning video...')
@@ -56,19 +72,35 @@ class Runner:
         print('Video finished!')
         print('Pose counts:', poses_map)
 
-        probe = ffmpeg.probe(self._file_path)
+        probe = ffmpeg.probe(file_path)
         video_info = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
 
         """
-        The r_frame_rate is the lowest framerate with which all timestamps can be represented accurately 
+        The r_frame_rate is the lowest framerate with which all timestamps can be represented accurately
         (i.e. it is the least common multiple of all framerates in the stream)
         """
         frame_rate = video_info['r_frame_rate'].split('/')
-        frame_rate = float(frame_rate[0]) / float(frame_rate[1])
+        self._frame_rate = float(frame_rate[0]) / float(frame_rate[1])
 
         print('Total frames:', self._total_frames)
-        print('Frame rate:', frame_rate)
-        print('Duration:', self._total_frames / frame_rate)
+        print('Frame rate:', self._frame_rate)
+        print('Duration:', self._total_frames / self._frame_rate)
 
         cap.release()
         cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    file = 'trailer.webm' if len(sys.argv) < 2 else sys.argv[1]
+
+    script_path = os.path.abspath(os.path.join(os.getcwd(), 'fixtures/'))
+    webm_path = os.path.join(script_path, file)
+
+    with tempfile.TemporaryDirectory() as temp_dir:
+        mp4_path = os.path.join(temp_dir, 'presentation.mp4')
+        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
+
+        wav_path = os.path.join(temp_dir, 'presentation.wav')
+        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {wav_path}')
+
+        results = Runner(mp4_path=mp4_path, wav_path=wav_path)

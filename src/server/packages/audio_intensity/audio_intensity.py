@@ -8,7 +8,7 @@ from pydub.utils import make_chunks
 
 class AudioIntensityAnalyzer:
     def __init__(self, filepath):
-        self._sound = AudioSegment.from_mp3(file=filepath)
+        self._sound = AudioSegment.from_file(filepath, 'mp4')
 
         self._cache = {
             'rms': {},
@@ -39,6 +39,7 @@ class AudioIntensityAnalyzer:
 
 
 if __name__ == '__main__':
+    # TODO: need to add an MP4 fixture
     file = 'dolphins.mp3' if len(sys.argv) < 2 else sys.argv[1]
 
     script_path = os.path.abspath(os.path.join(__file__, '../../../', 'fixtures/'))
