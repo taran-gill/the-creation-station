@@ -27,11 +27,17 @@ def upload():
     video_file = request.files['video-blob']
 
     with tempfile.TemporaryDirectory() as temp_dir:
-        file_path = os.path.join(temp_dir, 'presentation.webm')
-        video_file.save(file_path)
+        webm_path = os.path.join(temp_dir, 'presentation.webm')
+        video_file.save(webm_path)
+
+        mp4_path = os.path.join(temp_dir, 'presentation.mp4')
+        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
+
+        wav_path = os.path.join(temp_dir, 'presentation.wav')
+        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {wav_path}')
 
         try:
-            results = Runner(file_path)
+            results = Runner(mp4_path=mp4_path, wav_path=wav_path)
         except Exception as e:
             print('Error: ', e)
 
