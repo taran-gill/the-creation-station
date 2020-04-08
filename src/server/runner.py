@@ -28,15 +28,13 @@ class Runner:
 
         self.get_poses(mp4_path)
 
-        # START EDITING STUFF HERE
-        print('DEBUG: Frame rate is', self._frame_rate)
+        print('Total frames: ', self._total_frames)
 
         audio_intensity_analyzer = AudioIntensityAnalyzer(mp4_path)
-        print(audio_intensity_analyzer.get_loudness(1/self._frame_rate) 
-        print(audio_intensity_analyzer.get_average_root_mean_square(1/self._frame_rate))
-        print(audio_intensity_analyzer.get_rms_threshold((1/self._frame_rate), 0.5))
-        print(audio_intensity_analyzer.get_rms_threshold((1/self._frame_rate), 0.8))
-        print(audio_intensity_analyzer.get_rms_threshold((1/self._frame_rate), 0.9))
+        THRESHOLD_QUANTILE = 0.75
+        emphasized_chunks = \
+            audio_intensity_analyzer.get_emphasized_chunks(int(len(audio_intensity_analyzer._sound) / self._total_frames), THRESHOLD_QUANTILE)
+        print('Number of emphasized chunks: ', len(emphasized_chunks))
 
     def get_audio_intensity(self):
         pass
@@ -98,9 +96,9 @@ if __name__ == '__main__':
 
     with tempfile.TemporaryDirectory() as temp_dir:
         mp4_path = os.path.join(temp_dir, 'presentation.mp4')
-        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
+        os.system(f'ffmpeg -loglevel warning -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
 
         wav_path = os.path.join(temp_dir, 'presentation.wav')
-        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {wav_path}')
+        os.system(f'ffmpeg -loglevel warning -i {webm_path} -ab 128k -ar 44100 {wav_path}')
 
-        results = Runner(mp4_path=mp4_path, wav_path=wav_path)
+        results = Runner(mp4_path=mp4_path)

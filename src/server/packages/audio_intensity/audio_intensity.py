@@ -37,19 +37,9 @@ class AudioIntensityAnalyzer:
         self._cache['thresholds'][cache_key] = quantile_value
         return quantile_value
 
-    def get_loudness(self, chunk_length):
-
-        threshold = self.get_rms_threshold(chunk_length, 0.8) ##GRAB THE FPS IN RUNNER HERE
-        result = []
-        sound = np.array([s.rms for s in self._sound[::chunk_length]])
-        print(sound)
-        print(threshold)
-        for rms in sound:
-            if rms > threshold:
-                result.append("LOUD")
-            else: 
-                result.append("Not_loud")
-        return result   
+    def get_emphasized_chunks(self, chunk_length, threshold_quantile):
+        threshold = self.get_rms_threshold(chunk_length, threshold_quantile)
+        return [1 if s.rms >= threshold else 0 for s in self._sound[::chunk_length]]
 
 
 if __name__ == '__main__':

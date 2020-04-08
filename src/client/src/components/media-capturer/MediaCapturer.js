@@ -9,7 +9,7 @@ import './MediaCapturer.css';
 
 const CONSTRAINTS = { audio: true, video: true };
 
-const TYPES = ['video/webm;codecs=vp8', 'video/webm', ''];
+const TYPES = ['video/webm', ''];
 
 class MediaCapturer extends React.Component {
     constructor(props) {
