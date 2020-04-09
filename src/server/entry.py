@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS as cors
 import os
 import tempfile
+import traceback
 
 from runner import Runner
 
@@ -31,15 +32,15 @@ def upload():
         video_file.save(webm_path)
 
         mp4_path = os.path.join(temp_dir, 'presentation.mp4')
-        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
+        os.system(f'ffmpeg -nostdin -loglevel warning -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
 
         wav_path = os.path.join(temp_dir, 'presentation.wav')
-        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {wav_path}')
+        os.system(f'ffmpeg -nostdin -loglevel warning -i {webm_path} -ab 128k -ar 44100 {wav_path}')
 
         try:
             results = Runner(mp4_path=mp4_path, wav_path=wav_path)
         except Exception as e:
-            print('Error: ', e)
+            print(traceback.format_exc())
 
     return 'Upload successful!'
 
