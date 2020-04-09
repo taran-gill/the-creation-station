@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS as cors
 import os
 import tempfile
+import traceback
 
 from runner import Runner
 
@@ -39,7 +40,7 @@ def upload():
         try:
             results = Runner(mp4_path=mp4_path, wav_path=wav_path)
         except Exception as e:
-            print('Error: ', e)
+            print(traceback.format_exc())
 
     return 'Upload successful!'
 
