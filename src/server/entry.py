@@ -32,10 +32,10 @@ def upload():
         video_file.save(webm_path)
 
         mp4_path = os.path.join(temp_dir, 'presentation.mp4')
-        os.system(f'ffmpeg -loglevel warning -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
+        os.system(f'ffmpeg -nostdin -loglevel warning -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
 
         wav_path = os.path.join(temp_dir, 'presentation.wav')
-        os.system(f'ffmpeg -loglevel warning -i {webm_path} -ab 128k -ar 44100 {wav_path}')
+        os.system(f'ffmpeg -nostdin -loglevel warning -i {webm_path} -ab 128k -ar 44100 {wav_path}')
 
         try:
             results = Runner(mp4_path=mp4_path, wav_path=wav_path)

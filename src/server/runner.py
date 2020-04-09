@@ -54,7 +54,8 @@ class Runner:
         percentage_spent_open = (len([pose for pose in poses if pose == 'open']) / len(poses)) * 100
         print(f'\t- You spent {percentage_spent_open}% of your time displaying welcoming body language!')
 
-        poses_matched = [int(pose == 'open') for pose in poses]
+        pose_coeff_scores = {'open': 1, 'neutral': 0.5, 'closed': 0}
+        poses_matched = [pose_coeff_scores[pose] for pose in poses]
         if len(emphasized_chunks) > len(poses_matched):
             emphasized_chunks = emphasized_chunks[:len(poses_matched)]
 
@@ -141,9 +142,9 @@ if __name__ == '__main__':
 
     with tempfile.TemporaryDirectory() as temp_dir:
         mp4_path = os.path.join(temp_dir, 'presentation.mp4')
-        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
+        os.system(f'ffmpeg -nostdin -i {webm_path} -ab 128k -ar 44100 {mp4_path}')
 
         wav_path = os.path.join(temp_dir, 'presentation.wav')
-        os.system(f'ffmpeg -i {webm_path} -ab 128k -ar 44100 {wav_path}')
+        os.system(f'ffmpeg -nostdin -i {webm_path} -ab 128k -ar 44100 {wav_path}')
 
         results = Runner(mp4_path=mp4_path, wav_path=wav_path)
