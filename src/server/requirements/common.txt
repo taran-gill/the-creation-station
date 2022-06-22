@@ -10,7 +10,7 @@ h5py==2.10.0
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.0
 Markdown==3.1.1
-numpy==1.17.4
+numpy==1.22.0
 opencv-python==3.4.5.20
 opt-einsum==3.1.0
 pandas>=1.0.1
